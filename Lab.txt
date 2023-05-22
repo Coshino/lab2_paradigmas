@@ -1,0 +1,12 @@
+—---------------------------------
+%TDA FS
+—---------------------------------
+filesystem(Nombre, Drives, Users, Content, [Nombre, Drives, Users, Content, Ahora]). // :- 
+	//get_time(Ahora). (ESTA GENERANDO ERROR)
+
+getDrives(System, Drives) :- 
+	filesystem(_, Drives, _, _ , System).
+
+setDrives(System, UpdatedDrives, UpdatedSystem) :- 
+	filesystem(Nombre, _, Users, Content, System),
+	filesystem(Nombre, UpdatedDrives, Users, Content, UpdatedSystem).
