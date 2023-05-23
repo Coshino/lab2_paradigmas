@@ -10,3 +10,14 @@ getDrives(System, Drives) :-
 setDrives(System, UpdatedDrives, UpdatedSystem) :- 
 	filesystem(Nombre, _, Users, Content, System),
 	filesystem(Nombre, UpdatedDrives, Users, Content, UpdatedSystem).
+—---------------------------------
+%TDA Drive
+—---------------------------------
+
+drive(Unidad, Nombre, Capacidad, [Unidad, Nombre, Capacidad]).
+
+setAddNewDriveInDrives(NewDrive, Drives, UpdatedDrives) :- 
+	append(Drives, [NewDrive], UpdatedDrives).
+
+getUsers(System, Users) :- 
+	filesystem(_, _, Users, _, System).
