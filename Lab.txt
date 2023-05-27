@@ -25,3 +25,7 @@ getUsers(System, Users) :-
 setAddUserInUsers(Users, User, UpdatedUsers) :- 
 	append(Users, [User], UpdatedUsers).
 
+setUsers(System, UpdatedUsers, UpdatedSystem) :- 
+	filesystem(Nombre, Drives, _, Content, System),
+	filesystem(Nombre, Drives, UpdatedUsers, Content, UpdatedSystem).
+
