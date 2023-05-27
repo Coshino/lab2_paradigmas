@@ -21,3 +21,7 @@ setAddNewDriveInDrives(NewDrive, Drives, UpdatedDrives) :-
 
 getUsers(System, Users) :- 
 	filesystem(_, _, Users, _, System).
+
+setAddUserInUsers(Users, User, UpdatedUsers) :- 
+	append(Users, [User], UpdatedUsers).
+
