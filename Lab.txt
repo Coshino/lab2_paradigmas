@@ -29,3 +29,9 @@ setUsers(System, UpdatedUsers, UpdatedSystem) :-
 	filesystem(Nombre, Drives, _, Content, System),
 	filesystem(Nombre, Drives, UpdatedUsers, Content, UpdatedSystem).
 
+setAddUserInSystem(System, User, UpdatedSystem) :- 
+	getUsers(System, Users),
+	setAddUserInUsers(Users, User, UpdatedUsers),
+	setUsers(System, UpdatedUsers, UpdatedSystem).
+
+
