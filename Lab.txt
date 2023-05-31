@@ -33,5 +33,10 @@ setAddUserInSystem(System, User, UpdatedSystem) :-
 	getUsers(System, Users),
 	setAddUserInUsers(Users, User, UpdatedUsers),
 	setUsers(System, UpdatedUsers, UpdatedSystem).
+—---------------------------------
+%RF1 Constructor
+—---------------------------------
+system(Nombre, Sistema):-
+	filesystem(Nombre, [], [], [], Sistema).
 
 
