@@ -39,4 +39,17 @@ setAddUserInSystem(System, User, UpdatedSystem) :-
 system(Nombre, Sistema):-
 	filesystem(Nombre, [], [], [], Sistema).
 
+—---------------------------------
+%RF2 addDrive
+—---------------------------------
+
+systemAddDrive(System, Unidad, Nombre, Capacidad, UpdatedSystem) :- 
+	drive(Unidad, Nombre, Capacidad, NewDrive),
+
+	getDrives(System, CurrentDrives),
+
+	setAddNewDriveInDrives(NewDrive,CurrentDrives,UpdatedDrives),
+
+	setDrives(System,UpdatedDrives,UpdatedSystem).
+
 
