@@ -52,4 +52,8 @@ systemAddDrive(System, Unidad, Nombre, Capacidad, UpdatedSystem) :-
 
 	setDrives(System,UpdatedDrives,UpdatedSystem).
 
+register(System, User, UpdatedSystem) :- 
+	setAddUserInSystem(System, User, UpdatedSystem).
+
+
 
