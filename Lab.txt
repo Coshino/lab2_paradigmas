@@ -1,8 +1,7 @@
 —---------------------------------
 %TDA FS
 —---------------------------------
-filesystem(Nombre, Drives, Users, Content, [Nombre, Drives, Users, Content, Ahora]). // :- 
-	//get_time(Ahora). (ESTA GENERANDO ERROR)
+filesystem(Nombre, Drives, Users, Content, [Nombre, Drives, Users, Content]).
 
 getDrives(System, Drives) :- 
 	filesystem(_, Drives, _, _ , System).
@@ -52,8 +51,37 @@ systemAddDrive(System, Unidad, Nombre, Capacidad, UpdatedSystem) :-
 
 	setDrives(System,UpdatedDrives,UpdatedSystem).
 
-register(System, User, UpdatedSystem) :- 
+systemRegister(System, User, UpdatedSystem) :- 
 	setAddUserInSystem(System, User, UpdatedSystem).
 
+------------------------------
 
+systemLogin(System, UserName, UpdatedSystem):-
+	getUsers(System, Users),
+	member(UserName, Users),
+	if(system[2] != null)
+		return system
+
+systemLogout(System, System):-
+	if(System[2] != null)
+		System[2] = null
+
+systemSwitchDrive(System, Letra, UpdatedSystem):-
+	if(system[1] != Letra
+		Letra = pos 0
+
+systemMkdir(System, Nombre, UpdatedSystem):-
+	Crea una carpeta o archivo
+
+systemCd(System, Path, UpdatedSystem):-
+	Ingresa al path indicado
+
+systemAddFile(System, File, UpdatedSystem):-
+	agregar un nuevo file a la carpeta
+
+systemDel(System, FileName, UpdatedSystem):-
+	eliminar file de la carpeta
+
+	
+	
 
