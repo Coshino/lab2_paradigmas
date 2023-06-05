@@ -1,0 +1,6 @@
+Instrucciones de uso para las pruebas del código
+
+1) copiar el texto en el archivo Lab.txt y pegarlo en prolog. (https://swish.swi-prolog.org/)
+2) llamar a las funciones al lado derecho del programa como normalmente se hace.
+3)las pruebas están escritas en el archivo Pruebas_19514524_VinalsLenero.txt
+4) estas pruebas estan separadas por Requisitos, Prueba1, Prueba2 y Prueba3

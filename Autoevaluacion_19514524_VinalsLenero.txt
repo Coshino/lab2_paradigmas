@@ -1,0 +1,34 @@
+Autoevaluacion Emilio Viñals
+
+Requerimientos No Funcionales
+Lenguaje: 1
+Version: 1
+Standard: 1
+No Variables: 1
+Documentacion: 1
+Dom-Rec: 1
+Organizacion: 1
+Historial: 1
+Scripts de prueba: 1
+Prerrequisitos: 0.75
+
+Requerimientos Funcionales
+TDAs: 1
+System - constructor: 1
+system - add-drive: 1
+system - register: 1
+system - login: 1
+system - logout: 0.75
+system - switch drive: 1
+system - md: 0
+system - cd: 0
+system - add file: 1
+system - del: 1
+system - rd: 0
+system - copy: 0
+system - move: 0
+system - ren: 0.75
+system - dir: 0
+system - format: 1
+system - enrypt: 0
+system - decrypt: 0

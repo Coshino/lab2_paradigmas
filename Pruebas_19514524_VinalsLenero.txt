@@ -1,0 +1,30 @@
+Requisitos
+-------------------
+system("newSystem", S1), systemAddDrive(S1, "C", "OS", 10000000000, S2), 
+systemRegister(S2, "user1", S3), systemRegister(S3, "user2", S4), systemLogin(S4, "user1", S5),
+systemSwitchDrive(S5, "C", S6), systemMkdir(S6, "folder1", S7), systemMkdir(S7, "folder2", S8), 
+systemCd(S8, "folder1", S9), systemMkdir(S9, "folder11", S10), systemLogout(S10, S11), 
+systemLogin(S11, "user2", S12), file( “foo.txt”, “hello world”, F1), systemAddFile(S12, F1, S13), 
+systemCd(S13, "/folder2”, S14),  file( "ejemplo.txt", "otro archivo", F2), systemAddFile(S14, F2, S15).
+
+------------------------
+
+Prueba 1
+-----------------
+system("miSistema", S1), systemAddDrive(S1, "C", "OS", 1024, S2), 
+systemRegister(S2, "Emilio", S3), systemRegister(S3, "Otros", S4).
+------------------------
+
+Prueba 2
+----------------------------
+system("Sistema", S1), systemAddDrive(S1, "C", "OS", 512, S2), 
+systemAddDrive(S2, "D", "OTROS", 2048, S3), 
+systemRegister(S3, "Admin", S4), systemRegister(S4, "UsuarioNormal", S5).
+------------------------------
+
+Prueba 3
+------------------------------------
+system("AlphaSystem", S1), systemAddDrive(S1, "C", "OS", 2048, S2), 
+ystemAddDrive(S2, "D", "Programas", 2048, S3), systemAddDrive(S3, "E", "Osio", 2048, S4), 
+systemRegister(S4, "Emilio", S5).
+-----------------------------------------

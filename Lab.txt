@@ -1,117 +1,292 @@
-—---------------------------------
+%—---------------------------------
 %TDA FS
-—---------------------------------
+%—---------------------------------
+%Dom/Rec:nombre(string), drives(lista drive), users(lista string), content(lista content), unifica todo
+%Fun Princ: filesystem, unifica todos los valores en una lista
+%Fun Sec:
+%
 filesystem(Nombre, Drives, Users, Content, [Nombre, Drives, Users, Content]).
 
+%—---------------------------------
+%TDA Drive
+%—---------------------------------
+%Dom/Rec: system, drives
+%Fun Princ:getDrives, obtiene los drives de una lista
+%Fun Sec: filesystem, obtiene los drives actuales del sistema
+%
 getDrives(System, Drives) :- 
 	filesystem(_, Drives, _, _ , System).
 
+%Dom/Rec: system, drives(lista), system
+%Fun Princ: setDrives, actualizar los drives en el sistema
+%Fun Sec: filesystem, obtener el sistema sin drives para luego actualizarlo
+%
 setDrives(System, UpdatedDrives, UpdatedSystem) :- 
 	filesystem(Nombre, _, Users, Content, System),
 	filesystem(Nombre, UpdatedDrives, Users, Content, UpdatedSystem).
-—---------------------------------
-%TDA Drive
-—---------------------------------
 
+%Dom/Rec: unidad(string), nombre(string), capacidad(numero), lista de drive
+%Fun Princ: unificar toda la informacion ddel drive en una lista
+%Fun Sec:
+%
 drive(Unidad, Nombre, Capacidad, [Unidad, Nombre, Capacidad]).
 
+%Dom/Rec: drive, drives(lista), drives(lista)
+%Fun Princ: setAddNewDriveInDrives, agregar un nuevo drive a la lista de drive
+%Fun Sec:append, agrega al comienzo un drive a la lista de drives
+%
 setAddNewDriveInDrives(NewDrive, Drives, UpdatedDrives) :- 
 	append(Drives, [NewDrive], UpdatedDrives).
-
+%—---------------------------------
+%TDA Users
+%—---------------------------------
+%Dom/Rec:system, users(lista)
+%Fun Princ:getUser, obtiene la lista de usuaraios del sistema
+%Fun Sec:filesystem, obtiene solo la lista de usuarios del sistemsa dado
 getUsers(System, Users) :- 
 	filesystem(_, _, Users, _, System).
 
+%Dom/Rec:Users(lista), User, UpdatedUsers(lista user)
+%Fun Princ:setAddUserInUsers, agrega un nuevo usera a la lista de users
+%Fun Sec:append, agrega el nuevo usuario al principio de la lista de usuarios
 setAddUserInUsers(Users, User, UpdatedUsers) :- 
 	append(Users, [User], UpdatedUsers).
 
+%Dom/Rec:system, updatedUsers(lista usuarios), system
+%Fun Princ:setUsers, actualiza el sistema con la lista actualizada de usuarios
+%Fun Sec:filsesystem, obtiene el sistema sin usuarios para luego setearle la nueva lista de usuarios
 setUsers(System, UpdatedUsers, UpdatedSystem) :- 
 	filesystem(Nombre, Drives, _, Content, System),
 	filesystem(Nombre, Drives, UpdatedUsers, Content, UpdatedSystem).
 
+%Dom/Rec:system, user, system
+%Fun Princ:setAddUserInSystem, agrega nuevo usuarios al sistema
+%Fun Sec:getUsers, obitne los usuarios del sistem,setAddUserInUsers, agrega un usuario a la lista de usuarios
+	%setUsers, le da la lista de usuarios actualizaddos al siustema
 setAddUserInSystem(System, User, UpdatedSystem) :- 
 	getUsers(System, Users),
 	setAddUserInUsers(Users, User, UpdatedUsers),
 	setUsers(System, UpdatedUsers, UpdatedSystem).
-—---------------------------------
+%—---------------------------------
 %RF1 Constructor
-—---------------------------------
+%—---------------------------------
+%Dom/Rec: name (string) X System
+%Fun Princ: system, crea un sistema
+%Fun Sec: filesystem, le da el nombre a un sistema, deja drives, user y contenido vacio
 system(Nombre, Sistema):-
 	filesystem(Nombre, [], [], [], Sistema).
 
-—---------------------------------
+%—---------------------------------
 %RF2 addDrive
-—---------------------------------
-
+%—---------------------------------
+%Dom/Rec: system, unidad(string), nombre (string), capacidad(numero), system
+%Fun Princ: systemAddDrive, agrega un nuevo drive a la lista de drives
+%Fun Sec: drive, genera un drive - getDrives, obtiene los drives actuales - setAddNewDriveInDrives, agrega el nuevo drive a la lista de drives - setDrives, le da al sistema la nueva lista de drives
 systemAddDrive(System, Unidad, Nombre, Capacidad, UpdatedSystem) :- 
 	drive(Unidad, Nombre, Capacidad, NewDrive),
-
 	getDrives(System, CurrentDrives),
-
 	setAddNewDriveInDrives(NewDrive,CurrentDrives,UpdatedDrives),
-
 	setDrives(System,UpdatedDrives,UpdatedSystem).
 
+%—---------------------------------
+%RF3 Register
+%—---------------------------------
+%Dom/Rec:system, user(lista string), system
+%Fun Princ: systemRegister, registra usuario al sistema
+%Fun Sec: setAddUserInSystem, agrega un usuario al sistema
 systemRegister(System, User, UpdatedSystem) :- 
 	setAddUserInSystem(System, User, UpdatedSystem).
 
-------------------------------
-
-------------------------------
+%------------------------------
 %TDA Content
-------------------------------
-
+%------------------------------
+%Dom/Rec:system, content(strings lista)
+%Fun Princ:getCOntentInCOntents, obtiene la lista de contenidos
+%Fun Sec:filesystem, obtiene la lista de contents del systema entregado
 getContentInContents(System, Contents):-
 	filesystem(_, _, _, Contents, System).
 
+%Dom/Rec:system, content, contents(lista contents)
+%Fun Princ:setAddContentInCOntents, agrega un nuevo content a la lista de ocntents
+%Fun Sec:getContentInContents, obtiene la lista dde contents del sistems
+	%append, agrega el nuevo content a la lista de contents
+	$setContent, le da la nueva lista de contents al sistema
 setAddContentInContents(System, NewContent, UpdatedContent):-
 	getContentInContents(System, Contents),
 	append(Contents,[NewContent], UpdatedContent),
 	setContent(System, UpdatedContent, UpdatedSystem).
 
+%Dom/Rec:system, content, system
+%Fun Princ:setContent, le da un nuevo content al sistema y lo actualiza
+%Fun Sec:filesystem, obtiene el sistema sin contents para luego agregarle los nuevos
 setContent(System, UpdatedContent, UpdatedSystem) :- 
 	filesystem(Nombre, Drives, Users, _, System),
 	filesystem(Nombre, Drives, Users, UpdatedContent, UpdatedSystem).
 
-------------------------------
+%------------------------------
 %TDA Eliminar elemento de una lista
-
+%------------------------------
+%Dom/Rec: elemento (string), lista elemento|resto, nueva lista(strings)
+%Fun Princ:ver si la lista a recorrer es vacia
+%Fun Sec:
 delete(_, [], []).
 
+%Dom/Rec:elemento (string), lista elemento|resto, nueva lista(strings)
+%Fun princ: delete, pregunta si el elemento a buscar es el primero en la lista
+%Fun Sec: delete, elimina el elemento
 delete(Elemento, [Elemento|Resto], NewLista) :-
 	delete(Elemento, Resto, NewLista).
 
+%Dom/Rec:elemento (string), lista elemento|resto, nueva lista(strings)
+%Fun Princ:delete, pregunta si X se va a eliminar
+%Fun Sec: si X no es Elemento entonces no se toma en consideracion y se hace otro "delete"
 delete(Elemento, [X|Resto], [X|NewLista]) :-
 	X\=Elemento,
 	delete(Elemento, Resto, NewLista).
-------------------------------
+%------------------------------
+%TDA Agregar elemento a una lista
+%------------------------------
+%Dom/Rec: Elemento(string), Lista(string), newlista(string)
+%Fun Princ: addElement, agrega un elemento a una lista
+%Fun Sec: append, agrega el elemento al comienzo y genera una nueva lista
+addElement(Elemento, [Lista], NewLista):-
+	append(Lista,[Elemento], NewLista).
 
+%—---------------------------------
+%RF4 Login
+%—---------------------------------
+%Dom/Rec:system, userName(string), system
+%Fun Princ:systemLogin, busca al usuario y lo deja primero en la lista de usuarios
+%Fun Sec:getUser, obtiene a los usuarios
+	%member, pregunta si el usuario a iniciar sesion existe
+	%delete-addElement, deja al usuario primero en la lsita
+	%filsesystem, actualiza el sistema
 systemLogin(System, UserName, UpdatedSystem):-
 	getUsers(System, Users),
 	member(UserName, Users),
-	if(system[2] != null)
-		return system
+	delete(UserName, Users, NewUsers),
+	addElement(UserName, NewUsers, Users),
+    	filesystem(Nombre,Drive,_,Content,System),
+    	filesystem(Nombre,Drive,Users,Content,UpdatedSystem).
 
+%—---------------------------------
+%RF5 Logout
+%—---------------------------------
+%Dom/Rec:system, system
+%Fun Princ:systemLogout, actualiza el sistema de usuarios
+%Fun Sec: getUsers, obtiene los usuarios
+	%member-addElement, deja primero a un usuario vacio
 systemLogout(System, System):-
-	if(System[2] != null)
-		System[2] = null
+	getUsers(System, Users),
+	member("", Users),
+	addElement("", Users).
 
-systemSwitchDrive(System, Letra, UpdatedSystem):-
-	if(system[1] != Letra
-		Letra = pos 0
+%—---------------------------------
+%RF6 SwitchDrive
+%—---------------------------------
+%Dom/Rec:system, drive, system
+%Fun Princ:systemSwitchDrive, hace un cambio de drive en el sistema
+%Fun Sec:getDrives, obtiene los drives del sistema
+	%member, pregunta si el drive a cambiar existe en la lista de drives
+	%delete, elimina el drive de drives
+	%setAddNewDriveInDrives, agrega en primera posicion nuevamente al drive
+	%filesystem, actualiza la lista de drives del sistema
+systemSwitchDrive(System, Drive, UpdatedSystem):-
+	getDrives(System, Drives),
+	member(Drive, Drives),
+	delete(Drive, Drives, NewDrives),
+	setAddNewDriveInDrives(Drive, NewDrives, UpdatedDrives),
+    	filesystem(Nombre,_,Users,Content,System),
+   	filesystem(Nombre,UpdatedDrives,Users,Content,UpdatedSystem).
 
+%—---------------------------------
+%RF7 Mkdir
+%—---------------------------------
+%Dom/Rec:system, nombre(string), system
+%Fun Princ:systemMkdir, agrega un nuevo elemento en content
+%Fun Sec:setAddContentInContents, crea un nuevo archivo en contents
+	%filesystem, actualiza el sistema con el nuevo archivo en contents
 systemMkdir(System, Nombre, UpdatedSystem):-
-	setAddContentInContents(System, Nombre, UpdatedContent).
+	setAddContentInContents(System, Nombre, UpdatedContent),
+	filesystem(Nombre,Drives,Users,_,System),
+   	filesystem(Nombre,UDrives,Users,UpdatedContent,UpdatedSystem).
 
-systemCd(System, Path, UpdatedSystem):-
-	Ingresa al path indicado
+%—---------------------------------
+%RF8 Cd
+%—---------------------------------
+%Dom/Rec:
+%Fun Princ:
+%Fun Sec:
+%systemCd(System, Path, UpdatedSystem):-
+%	Ingresa al path indicado.
 
+%—---------------------------------
+%RF9 Add File
+%—---------------------------------
+%Dom/Rec:system, content, system
+%Fun Princ:systenAddFile, agrega un nuevo archovo
+%Fun Sec:setAddContentInContents, crea un nuevo archivo en contents
+	%filesystem, actualiza el sistema con el nuevo archivo en contents
 systemAddFile(System, File, UpdatedSystem):-
-	setAddContentInContents(System, Nombre, UpdatedContent).
+	setAddContentInContents(System, Nombre, UpdatedContent),
+	filesystem(Nombre,Drives,Users,_,System),
+   	filesystem(Nombre,UDrives,Users,UpdatedContent,UpdatedSystem).
 
+%—---------------------------------
+%RF10 Delete File   
+%—---------------------------------
+%Dom/Rec:system, content, system
+%Fun Princ:systemDel, elimina un archivo
+%Fun Sec:getContentInContents, obtiene la lista de archivos
+	%delete, elimina el archivo
+	%setContent, acrtualiza el sistem con la nueva lista de archivos
 systemDel(System, FileName, UpdatedSystem):-
 	getContentInContents(System, Contents),
 	delete(FileName, Contents, NewContents),
-	setContent(System, NewContents, UpdatedSystem)
+	setContent(System, NewContents, UpdatedSystem).
+
+%—---------------------------------
+%RF11 Copiar
+%—---------------------------------
+
+%—---------------------------------
+%RF12 Mover
+%—---------------------------------
+
+%—---------------------------------
+%RF13 Rename
+%—---------------------------------
+%Dom/Rec:system, name(string), newName(string), system
+%Fun Princ:systemRen, cambia el nombre a un archivo
+%Fun Sec:getContent, obtiene la lista de archivos
+	%member, busca el archivo en la lista
+	%delete, elimina el archivo de la lista
+	%setAddContentInContents, agrega el archivo nuevamente con un nuevo nombre
+systemRen(System, CurrentName, NewName, UpdatedSystem):-
+	getContentInContents(System, Contents),
+	member(CurrentName, Contents),
+	delete(CurrentName, Contents, NewContents),
+	setAddContentInContents(System, NewName, UpdatedContent).
+
+%\+
+
+%—---------------------------------
+%RF14 Directory
+%—---------------------------------
+
+%—---------------------------------
+%RF15 Fromatear
+%—---------------------------------
+%Dom/Rec:system,letter(string), newname(string), system
+%Fun Princ:systemFormat, formatea un drive guardando su capacidad y nombre
+%Fun Sec:
+systemFormat(System, Letter, NewName, UpdatedSystem):-
+	getDrives(System, Drives),
+	member(Letter, Drives),
+	delete(Letter, Drives, NewDrives).
+	
+	
+
 
 	
 	
