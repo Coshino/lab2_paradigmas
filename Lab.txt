@@ -56,6 +56,35 @@ systemRegister(System, User, UpdatedSystem) :-
 
 ------------------------------
 
+------------------------------
+%TDA Content
+------------------------------
+
+getContentInContents(System, Contents):-
+	filesystem(_, _, _, Contents, System).
+
+setAddContentInContents(System, NewContent, UpdatedContent):-
+	getContentInContents(System, Contents),
+	append(Contents,[NewContent], UpdatedContent),
+	setContent(System, UpdatedContent, UpdatedSystem).
+
+setContent(System, UpdatedContent, UpdatedSystem) :- 
+	filesystem(Nombre, Drives, Users, _, System),
+	filesystem(Nombre, Drives, Users, UpdatedContent, UpdatedSystem).
+
+------------------------------
+%TDA Eliminar elemento de una lista
+
+delete(_, [], []).
+
+delete(Elemento, [Elemento|Resto], NewLista) :-
+	delete(Elemento, Resto, NewLista).
+
+delete(Elemento, [X|Resto], [X|NewLista]) :-
+	X\=Elemento,
+	delete(Elemento, Resto, NewLista).
+------------------------------
+
 systemLogin(System, UserName, UpdatedSystem):-
 	getUsers(System, Users),
 	member(UserName, Users),
@@ -71,16 +100,18 @@ systemSwitchDrive(System, Letra, UpdatedSystem):-
 		Letra = pos 0
 
 systemMkdir(System, Nombre, UpdatedSystem):-
-	Crea una carpeta o archivo
+	setAddContentInContents(System, Nombre, UpdatedContent).
 
 systemCd(System, Path, UpdatedSystem):-
 	Ingresa al path indicado
 
 systemAddFile(System, File, UpdatedSystem):-
-	agregar un nuevo file a la carpeta
+	setAddContentInContents(System, Nombre, UpdatedContent).
 
 systemDel(System, FileName, UpdatedSystem):-
-	eliminar file de la carpeta
+	getContentInContents(System, Contents),
+	delete(FileName, Contents, NewContents),
+	setContent(System, NewContents, UpdatedSystem)
 
 	
 	
